@@ -40,7 +40,6 @@ public class UserController {
         return userService.findByEmail(email);
     }
 
-
     @PatchMapping("/update/{id}")
     public Users updateUsers(@PathVariable("id") long id, @RequestBody Users users){
         return userService.updateUsersById(id,users);
