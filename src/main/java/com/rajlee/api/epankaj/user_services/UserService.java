@@ -10,6 +10,8 @@ public interface UserService  {
 
     public Users findById(long id);
 
+    Users getCurrentUser();
+
     public Users findbyName(String name);
 
     public Users findByEmail(String email);

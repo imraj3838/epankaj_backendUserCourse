@@ -3,9 +3,9 @@ package com.rajlee.api.epankaj.user_services;
 import com.rajlee.api.epankaj.dtos.UserDTO;
 import com.rajlee.api.epankaj.models.Users;
 import com.rajlee.api.epankaj.repositories.Userrepository;
-
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +17,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private Userrepository userrepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public UserServiceImpl(Userrepository userrepository){
         this.userrepository = userrepository;
     }
@@ -26,6 +29,12 @@ public class UserServiceImpl implements UserService {
     public Users findById(long id) {
         return userrepository.findById(id);
     }
+
+        @Override
+        public Users getCurrentUser() {
+            Users user = (Users) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return user;
+        }
 
     @Override
     public Users findbyName(String name) {
@@ -71,7 +80,7 @@ public class UserServiceImpl implements UserService {
         Users user = new Users();
         user.setName(users.getName());
         user.setEmail(users.getEmail());
-        user.setPassword(users.getPassword());
+        user.setPassword(passwordEncoder.encode(users.getPassword()));
         return userrepository.save(user);
 
     }
