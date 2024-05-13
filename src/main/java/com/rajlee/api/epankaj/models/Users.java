@@ -13,4 +13,5 @@ public class Users extends BaseModel {
     private String name;
     private String password;
     private String image;
+    private String resetToken;
 }
