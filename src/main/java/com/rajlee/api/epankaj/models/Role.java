@@ -1,20 +1,26 @@
 package com.rajlee.api.epankaj.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+@NoArgsConstructor
+@Entity
+public class Role extends BaseModel {
+
     private String name;
+    private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private Role role;
+
+    public Role(String roleName) {
+    }
 }

@@ -63,7 +63,10 @@ public class MySecurityConfig {
                 .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/epankaj/v.0/users/save","/epankaj/v.0/users/contact","/epankaj/v.0/users/login","/epankaj/v.0/users/forgotpassword","/epankaj/v.0/users/resetpassword/**","/epankaj/v.0/users/resetpassword")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .authorizeHttpRequests((requests)->requests
-                        .requestMatchers("/epankaj/v.0/users/save","/epankaj/v.0/users/contact","/epankaj/v.0/users/login","/epankaj/v.0/users/forgotpassword","/epankaj/v.0/users/resetpassword/**","/epankaj/v.0/users/resetpassword").permitAll().anyRequest().authenticated())
+                        .requestMatchers("/epankaj/v.0/users/save","/epankaj/v.0/users/contact","/epankaj/v.0/users/login","/epankaj/v.0/users/forgotpassword","/epankaj/v.0/users/resetpassword/**","/epankaj/v.0/users/resetpassword").permitAll()
+                        .requestMatchers("/epankaj/v.0/admin/**").hasAuthority("ROLE_ADMIN") // Changed to hasAuthority
+                        .requestMatchers("/epankaj/v.0/users/**").hasAnyAuthority("USER", "ADMIN")
+                        .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

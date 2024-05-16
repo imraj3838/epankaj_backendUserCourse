@@ -21,7 +21,6 @@ public class Users extends BaseModel {
     private String image;
     private String resetToken;
 
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
@@ -29,4 +28,5 @@ public class Users extends BaseModel {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
+    // Constructors, getters, and setters
 }

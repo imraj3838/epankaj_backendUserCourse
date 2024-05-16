@@ -1,5 +1,7 @@
 package com.rajlee.api.epankaj.controllers;
 
+//import com.javatechie.jpa.dto.APIResponse;
+import com.rajlee.api.epankaj.dtos.APIResponse;
 import com.rajlee.api.epankaj.dtos.UserDTO;
 import com.rajlee.api.epankaj.jwtservice.JwtService;
 import com.rajlee.api.epankaj.models.LoginResponse;
@@ -8,6 +10,7 @@ import com.rajlee.api.epankaj.models.Users;
 import com.rajlee.api.epankaj.repositories.Userrepository;
 import com.rajlee.api.epankaj.user_services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,13 +37,34 @@ public class UserController {
 
     @GetMapping("/hello")
     public String greet(){
-        return "Hello brother";
+        return "Hello user end point";
     }
 
-    @GetMapping("/getall")
-    public List<Users> getAllUsers() {
-        return userService.getAllUsers();
+
+    @GetMapping("/getAll")
+    private APIResponse<List<Users>> getUsers() {
+        List<Users> allUsers = userService.getAllUsers();
+        return new APIResponse<>(allUsers.size(), allUsers);
     }
+
+    @GetMapping("/{field}")
+    private APIResponse<List<Users>> getUsersWithSort(@PathVariable String field) {
+        List<Users> allUsers = userService.findUserssWithSorting(field);
+        return new APIResponse<>(allUsers.size(), allUsers);
+    }
+
+    @GetMapping("/pagination/{offset}/{pageSize}")
+    private APIResponse<Page<Users>> getUsersWithPagination(@PathVariable int offset, @PathVariable int pageSize) {
+        Page<Users> usersWithPagination = userService.findUsersWithPagination(offset, pageSize);
+        return new APIResponse<>(usersWithPagination.getSize(), usersWithPagination);
+    }
+
+    @GetMapping("/paginationAndSort/{offset}/{pageSize}/{field}")
+    private APIResponse<Page<Users>> getUserssWithPaginationAndSort(@PathVariable int offset, @PathVariable int pageSize,@PathVariable String field) {
+        Page<Users> usersWithPagination = userService.findUsersWithPaginationAndSorting(offset, pageSize, field);
+        return new APIResponse<>(usersWithPagination.getSize(), usersWithPagination);
+    }
+
 
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getCurrentUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
