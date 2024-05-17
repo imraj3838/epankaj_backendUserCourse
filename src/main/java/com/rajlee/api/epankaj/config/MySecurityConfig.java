@@ -61,8 +61,9 @@ public class MySecurityConfig {
 //                    }
 //                }))
                 .cors(customize->customize.disable())
-                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/epankaj/v.0/users/save","/epankaj/v.0/users/contact","/epankaj/v.0/users/login","/epankaj/v.0/users/forgotpassword","/epankaj/v.0/users/resetpassword")
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+//                .csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/epankaj/v.0/users/save","/epankaj/v.0/users/contact","/epankaj/v.0/users/login","/epankaj/v.0/users/forgotpassword","/epankaj/v.0/users/resetpassword")
+//                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                .csrf(customize->customize.disable())
                 .authorizeHttpRequests((requests)->requests
                         .requestMatchers("/epankaj/v.0/users/save","/epankaj/v.0/users/contact","/epankaj/v.0/users/login","/epankaj/v.0/users/forgotpassword","/epankaj/v.0/users/resetpassword","/epankaj/v.0/users/getall").permitAll().anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
